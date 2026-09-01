@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>حساب جديد - متوسطة تمره</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #f0f4f8;
+            direction: rtl;
+            color: #1a2e3a;
+            min-height: 100vh;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #e8edf2; }
+        ::-webkit-scrollbar-thumb { background: #2a8a9e; border-radius: 10px; }
+
+        /* ===== TOP HEADER ===== */
+        .top-header {
+            background: linear-gradient(135deg, #0d4a55 0%, #1a6f7a 50%, #2a8a9e 100%);
+            padding: 0.6rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border-bottom: 3px solid #ffd966;
+        }
+
+        .top-header .back-home {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .top-header .back-home:hover {
+            color: #ffd966;
+        }
+
+        .top-header .lang-switch {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .top-header .lang-switch button {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: 0.2s;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .top-header .lang-switch button:hover,
+        .top-header .lang-switch button.active {
+            background: #ffd966;
+            color: #0d4a55;
+            border-color: #ffd966;
+        }
+
+        /* ===== MAIN NAV ===== */
+        .main-nav {
+            background: white;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .main-nav .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .main-nav .brand .logo {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #0d4a55, #2a8a9e);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 12px rgba(42,138,158,0.3);
+        }
+
+        .main-nav .brand .school-name {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-nav .brand .school-name .name {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #0d4a55;
+            line-height: 1.2;
+        }
+
+        .main-nav .brand .school-name .sub {
+            font-size: 0.75rem;
+            color: #6a8a96;
+            font-weight: 600;
+        }
+
+        .main-nav .nav-links {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        .main-nav .nav-links a {
+            text-decoration: none;
+            color: #1a3e4a;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+        }
+
+        .main-nav .nav-links a:hover {
+            background: rgba(42,138,158,0.08);
+            color: #2a8a9e;
+        }
+
+        .main-nav .nav-links a.active {
+            background: linear-gradient(135deg, #0d4a55, #2a8a9e);
+            color: white;
+            box-shadow: 0 4px 14px rgba(42,138,158,0.25);
+        }
+
+        /* ===== REGISTER PAGE ===== */
+        .register-page {
+            min-height: calc(100vh - 160px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #f0f7fa, #daeef5);
+            padding: 1.5rem;
+        }
+
+        .register-container {
+            max-width: 580px;
+            width: 100%;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(16px);
+            border-radius: 48px;
+            padding: 2.8rem 2.5rem;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .register-container h2 {
+            text-align: center;
+            color: #0d4a55;
+            font-size: 1.6rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .register-container .subtitle {
+            text-align: center;
+            color: #6a8a96;
+            font-size: 0.9rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .role-btn {
+            padding: 0.6rem 0.5rem;
+            border: 2px solid #d0d7dd;
+            border-radius: 30px;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.25s;
+            font-family: 'Cairo', sans-serif;
+            color: #1a3e4a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .role-btn:hover {
+            border-color: #2a8a9e;
+            background: rgba(42,138,158,0.04);
+        }
+
+        .role-btn.active {
+            border-color: #2a8a9e;
+            background: linear-gradient(135deg, #0d4a55, #2a8a9e);
+            color: white;
+            box-shadow: 0 4px 14px rgba(42,138,158,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #16515e;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group label i {
+            margin-left: 0.4rem;
+            color: #2a8a9e;
+            width: 1.2rem;
+        }
+
+        .form-group label .required {
+            color: #dc3545;
+            margin-right: 0.2rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.85rem 1.2rem;
+            font-size: 1rem;
+            border: 2px solid rgba(42,138,158,0.08);
+            border-radius: 30px;
+            background: #f8fafc;
+            transition: all 0.25s;
+            font-family: 'Cairo', sans-serif;
+            color: #1a2e3a;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #2a8a9e;
+            background: white;
+            box-shadow: 0 4px 16px rgba(42,138,158,0.08);
+        }
+
+        .form-group input::placeholder {
+            color: #aac0c9;
+            font-weight: 300;
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236a8a96' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 1.2rem center;
+        }
+
+        .form-group .helper-text {
+            font-size: 0.75rem;
+            color: #6a8a96;
+            margin-top: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .form-group .helper-text i {
+            color: #ffc107;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, #0d4a55, #2a8a9e);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 8px 24px rgba(42,138,158,0.2);
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 36px rgba(42,138,158,0.3);
+        }
+
+        .register-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #6a8a96;
+            font-size: 0.8rem;
+        }
+
+        .register-footer a {
+            color: #2a8a9e;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .register-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .top-header { padding: 0.4rem 1rem; flex-direction: column; }
+            .main-nav { padding: 0.6rem 1rem; flex-direction: column; }
+            .main-nav .nav-links { justify-content: center; }
+            .main-nav .nav-links a { padding: 0.3rem 0.8rem; font-size: 0.8rem; }
+            .register-container { padding: 1.8rem 1.2rem; }
+            .role-selector { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .main-nav .brand .school-name .name { font-size: 1.1rem; }
+            .register-container h2 { font-size: 1.3rem; }
+            .register-btn { font-size: 0.95rem; padding: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOP HEADER ===== -->
+    <div class="top-header">
+        <a class="back-home" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-right"></i> العودة للرئيسية
+        </a>
+        <div class="lang-switch">
+            <button class="active" onclick="setLang('ar')">عربي</button>
+            <button onclick="setLang('en')">English</button>
+        </div>
+    </div>
+
+    <!-- ===== MAIN NAV ===== -->
+    <nav class="main-nav">
+        <div class="brand" onclick="window.location.href='index.html'">
+            <div class="logo">
+                <i class="fas fa-school"></i>
+            </div>
+            <div class="school-name">
+                <span class="name">متوسطة تمره</span>
+                <span class="sub"><i class="fas fa-graduation-cap"></i> منصة إدارة متكاملة</span>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i> الرئيسية
+            </a>
+            <a onclick="window.location.href='login.html'">
+                <i class="fas fa-sign-in-alt"></i> دخول
+            </a>
+            <a class="active" onclick="window.location.href='register.html'">
+                <i class="fas fa-user-plus"></i> حساب جديد
+            </a>
+        </div>
+    </nav>
+
+    <!-- ===== REGISTER PAGE ===== -->
+    <div class="register-page">
+        <div class="register-container">
+            <h2><i class="fas fa-user-plus" style="color:#2a8a9e;"></i> حساب جديد</h2>
+            <p class="subtitle">اختر نوع الحساب وأدخل بياناتك للتسجيل</p>
+
+            <div class="role-selector">
+                <button class="role-btn" data-role="admin" onclick="selectRole('admin')">
+                    <i class="fas fa-user-tie"></i> مدير
+                </button>
+                <button class="role-btn active" data-role="teacher" onclick="selectRole('teacher')">
+                    <i class="fas fa-chalkboard-teacher"></i> معلم
+                </button>
+                <button class="role-btn" data-role="parent" onclick="selectRole('parent')">
+                    <i class="fas fa-user-friends"></i> ولي أمر
+                </button>
+            </div>
+
+            <form id="registerForm" onsubmit="handleRegister(event)">
+
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> الاسم الكامل <span class="required">*</span></label>
+                    <input type="text" id="fullName" placeholder="أدخل الاسم الكامل" required />
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> البريد الإلكتروني <span class="required">*</span></label>
+                    <input type="email" id="email" placeholder="example@school.com" required />
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-phone"></i> رقم الجوال <span class="required">*</span></label>
+                    <input type="tel" id="phone" placeholder="0500000000" required />
+                </div>
+
+                <input type="hidden" id="roleInput" value="teacher" />
+
+                <div class="form-group" id="studentCodeGroup" style="display:none;">
+                    <label><i class="fas fa-id-card"></i> كود الطالب <span class="required">*</span></label>
+                    <input type="text" id="studentCode" placeholder="أدخل كود الطالب الخاص بـ ابنك/ابنتك" />
+                    <div class="helper-text">
+                        <i class="fas fa-info-circle"></i>
+                        سيتم ربط حسابك بالطالب عبر هذا الكود (تحصل عليه من المدرسة)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-key"></i> كلمة المرور <span class="required">*</span></label>
+                    <input type="password" id="password" placeholder="********" required minlength="6" />
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fas fa-check-circle"></i> تأكيد كلمة المرور <span class="required">*</span></label>
+                    <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" required minlength="6" />
+                </div>
+
+                <button type="submit" class="register-btn">
+                    <i class="fas fa-user-plus"></i> إنشاء حساب
+                </button>
+            </form>
+
+            <div class="register-footer">
+                لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- ===== JAVASCRIPT ===== -->
+    <!-- ========================================================= -->
+    <script>
+        // ===== ROLE SELECTION =====
+        function selectRole(role) {
+            document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.role-btn[data-role="${role}"]`).classList.add('active');
+
+            document.getElementById('roleInput').value = role;
+
+            const studentCodeGroup = document.getElementById('studentCodeGroup');
+            if (role === 'parent') {
+                studentCodeGroup.style.display = 'block';
+                document.getElementById('studentCode').required = true;
+            } else {
+                studentCodeGroup.style.display = 'none';
+                document.getElementById('studentCode').required = false;
+            }
+        }
+
+        // ===== REGISTER HANDLER =====
+        function handleRegister(e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const role = document.getElementById('roleInput').value;
+            const studentCode = document.getElementById('studentCode').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!fullName || !email || !phone || !password || !confirmPassword) {
+                alert('❌ الرجاء تعبئة جميع الحقول المطلوبة');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('❌ كلمة المرور وتأكيدها غير متطابقين');
+                return;
+            }
+
+            if (role === 'parent' && !studentCode) {
+                alert('❌ الرجاء إدخال كود الطالب لربط حسابك بابنك/ابنتك');
+                return;
+            }
+
+            const userData = {
+                name: fullName,
+                email: email,
+                phone: phone,
+                role: role,
+                studentCode: studentCode || null,
+                avatar: fullName.charAt(0),
+                registeredAt: new Date().toISOString()
+            };
+
+            let users = JSON.parse(localStorage.getItem('tamrah_users') || '[]');
+
+            if (users.some(u => u.email === email)) {
+                alert('❌ هذا البريد الإلكتروني مسجل بالفعل');
+                return;
+            }
+
+            users.push(userData);
+            localStorage.setItem('tamrah_users', JSON.stringify(users));
+
+            alert(`✅ تم إنشاء الحساب بنجاح!\n\n👤 ${fullName}\n📧 ${email}\n🎯 الدور: ${role === 'parent' ? 'ولي أمر' : role === 'teacher' ? 'معلم' : 'مدير'}`);
+
+            window.location.href = 'login.html';
+        }
+
+        // ===== LANGUAGE SWITCH =====
+        function setLang(lang) {
+            document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // ===== INIT =====
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('studentCodeGroup').style.display = 'none';
+            document.getElementById('studentCode').required = false;
+        });
+
+        console.log('📝 صفحة التسجيل - متوسطة تمره');
+    </script>
+
+</body>
+</html>
