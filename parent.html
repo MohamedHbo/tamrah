@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة ولي الأمر - متوسطة تمره</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #f0f4f8;
+            direction: rtl;
+            color: #1a2e3a;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e8edf2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a8a9e;
+            border-radius: 10px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+            border-right: 4px solid #2a8a9e;
+            animation: slideIn 0.3s ease;
+            min-width: 280px;
+            font-weight: 600;
+        }
+        .toast.success {
+            border-right-color: #28a745;
+        }
+        .toast.error {
+            border-right-color: #dc3545;
+        }
+        .toast.warning {
+            border-right-color: #ffc107;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ===== DASHBOARD LAYOUT ===== */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(180deg, #0d4a55 0%, #1a6f7a 100%);
+            color: white;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: -4px 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #ffd966;
+            border-radius: 10px;
+        }
+
+        .sidebar-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .sidebar-header .logo {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #ffd966;
+        }
+
+        .sidebar-header .brand-text {
+            font-size: 1.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .sidebar-header .brand-text small {
+            font-weight: 400;
+            font-size: 0.65rem;
+            opacity: 0.7;
+            display: block;
+        }
+
+        .sidebar-user {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .sidebar-user .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-user .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-user .user-role {
+            font-size: 0.7rem;
+            opacity: 0.6;
+        }
+
+        .sidebar-menu {
+            padding: 0.5rem 0;
+        }
+
+        .sidebar-menu .menu-section {
+            padding: 0.7rem 1.5rem 0.3rem;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            opacity: 0.4;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 0.85rem;
+            border-right: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .sidebar-menu a:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            border-right-color: #ffd966;
+        }
+
+        .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border-right-color: #ffd966;
+        }
+
+        .sidebar-menu a i {
+            width: 1.3rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .sidebar-menu a.active i,
+        .sidebar-menu a:hover i {
+            color: #ffd966;
+        }
+
+        .sidebar-menu .logout {
+            margin-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 0.5rem;
+            color: rgba(255, 100, 100, 0.6);
+        }
+
+        .sidebar-menu .logout:hover {
+            background: rgba(255, 50, 50, 0.08);
+            color: #ff6b6b;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-right: 280px;
+            min-height: 100vh;
+            padding: 1.5rem 2rem 2rem;
+            flex: 1;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .topbar .page-title h2 {
+            font-size: 1.3rem;
+            color: #0d4a55;
+            font-weight: 800;
+        }
+
+        .topbar .page-title small {
+            font-size: 0.75rem;
+            color: #6a8a96;
+            font-weight: 400;
+            display: block;
+        }
+
+        .topbar .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .topbar .user-badge .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d4a55, #2a8a9e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .topbar .user-badge .info .name {
+            font-weight: 700;
+            color: #0d4a55;
+            font-size: 0.9rem;
+        }
+
+        .topbar .user-badge .info .role {
+            font-size: 0.7rem;
+            color: #6a8a96;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            background: #0d4a55;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        /* ===== PAGES ===== */
+        .page-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== CARDS & CONTAINERS ===== */
+        .card-container {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(42, 138, 158, 0.04);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-container .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .card-container .section-header h3 {
+            color: #0d4a55;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            background: linear-gradient(135deg, #0d4a55, #2a8a9e);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-family: 'Cairo', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(42, 138, 158, 0.2);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #1a2332;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(42, 138, 158, 0.04);
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0d4a55, #2a8a9e);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #0d4a55;
+        }
+
+        .stat-card .label {
+            color: #6a8a96;
+            font-size: 0.8rem;
+        }
+
+        .stat-card .stat-icon {
+            float: left;
+            font-size: 2rem;
+            color: #2a8a9e;
+            opacity: 0.15;
+        }
+
+        /* ===== BADGES ===== */
+        .badge-status {
+            padding: 0.15rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-status.present {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-status.absent {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .badge-status.late {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .badge-status.excused {
+            background: #cce5ff;
+            color: #004085;
+        }
+        .badge-status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .badge-status.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-status.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* ===== STUDENT CARD ===== */
+        .child-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(42, 138, 158, 0.06);
+            transition: all 0.3s;
+            margin-bottom: 1.5rem;
+        }
+
+        .child-card:hover {
+            background: white;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .child-card .child-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .child-card .child-header .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd966, #f5b042);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0d4a55;
+        }
+
+        .child-card .child-header .info .name {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0d4a55;
+        }
+
+        .child-card .child-header .info .class {
+            font-size: 0.85rem;
+            color: #6a8a96;
+        }
+
+        .child-card .grades-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .child-card .grades-row .grade-item {
+            background: white;
+            padding: 0.6rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(42, 138, 158, 0.04);
+        }
+
+        .child-card .grades-row .grade-item .subject {
+            font-size: 0.75rem;
+            color: #6a8a96;
+        }
+
+        .child-card .grades-row .grade-item .score {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #0d4a55;
+        }
+
+        .child-card .child-stats {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .child-card .child-stats .stat {
+            background: white;
+            padding: 0.4rem 1rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(42, 138, 158, 0.04);
+        }
+
+        .child-card .child-stats .stat strong {
+            color: #0d4a55;
+        }
+
+        /* ===== SIGNATURE ===== */
+        .signature-area {
+            border: 2px dashed #2a8a9e;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            background: #f8fafc;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signature-area:hover {
+            border-color: #0d4a55;
+            background: #f0f7fa;
+        }
+
+        .signature-area .sig-preview {
+            font-size: 2rem;
+            font-family: 'Cairo', cursive;
+            color: #0d4a55;
+            font-weight: 700;
+        }
+
+        .signature-area .sig-label {
+            color: #6a8a96;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+
+        .signature-area.signed {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .signature-area.signed .sig-preview {
+            color: #28a745;
+        }
+
+        /* ===== NOTIFICATION ITEM ===== */
+        .notification-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0f4f8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item .notif-content {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .notification-item .notif-content i {
+            font-size: 1.2rem;
+            color: #2a8a9e;
+        }
+
+        .notification-item .notif-content .notif-text {
+            font-weight: 600;
+            color: #0d4a55;
+        }
+
+        .notification-item .notif-content .notif-desc {
+            font-size: 0.8rem;
+            color: #6a8a96;
+        }
+
+        .notification-item .notif-date {
+            font-size: 0.7rem;
+            color: #6a8a96;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #6a8a96;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #2a8a9e;
+            opacity: 0.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .sidebar {
+                right: -280px;
+            }
+            .sidebar.open {
+                right: 0;
+            }
+            .main-content {
+                margin-right: 0;
+            }
+            .sidebar-toggle {
+                display: flex !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.8rem;
+            }
+            .topbar .page-title {
+                text-align: center;
+            }
+            .topbar .user-badge {
+                justify-content: center;
+            }
+            .child-card .grades-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .child-card .grades-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-box .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-box .modal-header h3 {
+            color: #0d4a55;
+            font-weight: 800;
+        }
+
+        .modal-box .modal-header .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #6a8a96;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-box .modal-header .close-btn:hover {
+            color: #dc3545;
+            transform: rotate(90deg);
+        }
+
+        /* ===== FORM ===== */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #16515e;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1.2rem;
+            font-size: 0.95rem;
+            border: 2px solid rgba(42, 138, 158, 0.08);
+            border-radius: 16px;
+            background: #f8fafc;
+            transition: all 0.25s;
+            font-family: 'Cairo', sans-serif;
+            color: #1a2e3a;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2a8a9e;
+            background: white;
+            box-shadow: 0 4px 16px rgba(42, 138, 158, 0.08);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="dashboard">
+
+        <!-- ===== SIDEBAR OVERLAY ===== -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo"><i class="fas fa-school"></i></div>
+                <div class="brand-text">
+                    متوسطة تمره
+                    <small>نظام إدارة متكامل</small>
+                </div>
+            </div>
+
+            <div class="sidebar-user">
+                <div class="avatar" id="parentAvatar">ع</div>
+                <div>
+                    <div class="user-name" id="parentName">عبدالله محمد</div>
+                    <div class="user-role" id="parentRole">ولي أمر</div>
+                </div>
+            </div>
+
+            <div class="sidebar-menu">
+                <div class="menu-section">الرئيسية</div>
+                <a class="active" data-page="dashboard" onclick="showPage('dashboard')">
+                    <i class="fas fa-home"></i> الرئيسية
+                </a>
+
+                <div class="menu-section">الأبناء</div>
+                <a data-page="children" onclick="showPage('children')">
+                    <i class="fas fa-user-graduate"></i> بيانات الأبناء
+                </a>
+                <a data-page="grades" onclick="showPage('grades')">
+                    <i class="fas fa-star"></i> الدرجات
+                </a>
+                <a data-page="attendance" onclick="showPage('attendance')">
+                    <i class="fas fa-clipboard-list"></i> الحضور والغياب
+                </a>
+
+                <div class="menu-section">التواصل</div>
+                <a data-page="messages" onclick="showPage('messages')">
+                    <i class="fas fa-envelope"></i> الرسائل
+                </a>
+                <a data-page="notifications" onclick="showPage('notifications')">
+                    <i class="fas fa-bell"></i> الإشعارات
+                </a>
+
+                <div class="menu-section">التوقيع</div>
+                <a data-page="signature" onclick="showPage('signature')">
+                    <i class="fas fa-pen-fancy"></i> التوقيع الإلكتروني
+                </a>
+
+                <a class="logout" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                </a>
+            </div>
+        </aside>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="topbar">
+                <div style="display:flex; align-items:center; gap:0.8rem;">
+                    <button class="sidebar-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="page-title">
+                        <h2 id="pageTitle">الرئيسية</h2>
+                        <small id="pageSubtitle">لوحة تحكم ولي الأمر</small>
+                    </div>
+                </div>
+                <div class="user-badge">
+                    <div class="info">
+                        <div class="name" id="topName">عبدالله محمد</div>
+                        <div class="role" id="topRole">ولي أمر</div>
+                    </div>
+                    <div class="avatar" id="topAvatar">ع</div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ===== PAGE: DASHBOARD ===== -->
+            <!-- ========================================================= -->
+            <div id="page-dashboard" class="page-content active">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="number" id="childrenCount">0</div><div class="label">عدد الأبناء</div><i class="fas fa-user-graduate stat-icon"></i></div>
+                    <div class="stat-card"><div class="number" id="avgGrade">0%</div><div class="label">المعدل العام</div><i class="fas fa-star stat-icon"></i></div>
+                    <div class="stat-card"><div class="number" id="attendanceRate">0%</div><div class="label">نسبة الحضور</div><i class="fas fa-calendar-check stat-icon"></i></div>
+                    <div class="stat-card"><div class="number" id="notifCount">0</div><div class="label">الإشعارات</div><i class="fas fa-bell stat-icon"></i></div>
+                    <div class="stat-card"><div class="number" id="incidentCount">0</div><div class="label">المخالفات</div><i class="fas fa-exclamation-triangle stat-icon"></i></div>
+                    <div class="stat-card"><div class="number" id="signatureStatus">✗</div><div class="label">التوقيع</div><i class="fas fa-pen-fancy stat-icon"></i></div>
+                </div>
+
+                <!-- الأبناء -->
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-user-graduate"></i> أبنائي</h3>
+                        <button class="btn-primary" onclick="showPage('children')"><i class="fas fa-arrow-left"></i> عرض الكل</button>
+                    </div>
+                    <div id="childrenDashboard">
+                        <!-- سيتم تعبئتها بواسطة JavaScript -->
+                    </div>
+                </div>
+
+                <!-- الإشعارات -->
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-bell"></i> آخر الإشعارات</h3>
+                        <button class="btn-primary" onclick="showPage('notifications')"><i class="fas fa-arrow-left"></i> عرض الكل</button>
+                    </div>
+                    <div id="recentNotifications">
+                        <!-- سيتم تعبئتها بواسطة JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ===== PAGE: CHILDREN ===== -->
+            <!-- ========================================================= -->
+            <div id="page-children" class="page-content">
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-user-graduate"></i> بيانات الأبناء</h3>
+                        <button class="btn-primary" onclick="showToast('جاري تحديث البيانات...', 'info')"><i class="fas fa-sync"></i> تحديث</button>
+                    </div>
+                    <div id="childrenList">
+                        <!-- سيتم تعبئتها بواسطة JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ===== PAGE: GRADES ===== -->
+            <!-- ========================================================= -->
+            <div id="page-grades" class="page-content">
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-star"></i> درجات الأبناء</h3>
+                        <button class="btn-primary" onclick="showToast('جاري تحديث الدرجات...', 'info')"><i class="fas fa-sync"></i> تحديث</button>
+                    </div>
+                    <div id="gradesList">
+                        <!-- سيتم تعبئتها بواسطة JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ===== PAGE: ATTENDANCE ===== -->
+            <!-- ========================================================= -->
+            <div id="page-attendance" class="page-content">
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-clipboard-list"></i> الحضور والغياب</h3>
+                        <button class="btn-primary" onclick="showToast('جاري تحديث بيانات الحضور...', 'info')"><i class="fas fa-sync"></i> تحديث</button>
+                    </div>
+                    <div id="attendanceList">
+                        <!-- سيتم تعبئتها بواسطة JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ===== PAGE: NOTIFICATIONS ===== -->
+            <!-- ========================================================= -->
+            <div id="page-notifications" class="page-content">
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-bell"></i> الإشعارات</h3>
+                        <button class="btn-primary" onclick="markAllRead()"><i class="fas fa-check-double"></i> تعليم الكل كمقروء</button>
+                    </div>
+                    <div id="notificationsList">
+                        <!-- سيتم تعبئتها بواسطة JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ===== PAGE: MESSAGES ===== -->
+            <!-- ========================================================= -->
+            <div id="page-messages" class="page-content">
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-envelope"></i> الرسائل</h3>
+                        <button class="btn-primary" onclick="openMessageModal()"><i class="fas fa-plus"></i> رسالة جديدة</button>
+                    </div>
+                    <div id="messagesList">
+                        <!-- سيتم تعبئتها بواسطة JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ===== PAGE: SIGNATURE ===== -->
+            <!-- ========================================================= -->
+            <div id="page-signature" class="page-content">
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-pen-fancy"></i> التوقيع الإلكتروني</h3>
+                    </div>
+
+                    <div class="signature-area" id="signatureArea" onclick="toggleSignature()">
+                        <div class="sig-preview" id="signaturePreview">................................</div>
+                        <div class="sig-label">
+                            <i class="fas fa-pen"></i> اضغط هنا للتوقيع الإلكتروني
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:1rem; margin-top:0.5rem; flex-wrap:wrap;">
+                        <button class="btn-success" onclick="toggleSignature()">
+                            <i class="fas fa-check"></i> توقيع
+                        </button>
+                        <button class="btn-danger" onclick="clearSignature()">
+                            <i class="fas fa-times"></i> مسح التوقيع
+                        </button>
+                        <button class="btn-primary" onclick="downloadSignature()">
+                            <i class="fas fa-download"></i> تحميل التوقيع
+                        </button>
+                    </div>
+
+                    <div style="margin-top:1rem; padding:1rem; background:#f8fafc; border-radius:12px;">
+                        <p style="font-size:0.85rem; color:#6a8a96;">
+                            <i class="fas fa-info-circle" style="color:#2a8a9e;"></i>
+                            التوقيع الإلكتروني هو موافقة رسمية منك على المستندات والإقرارات المدرسية.
+                            يتم استخدامه لتأكيد حضور الطالب أو الموافقة على الأنشطة.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- سجل التوقيعات -->
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-history"></i> سجل التوقيعات</h3>
+                    </div>
+                    <div id="signatureLog">
+                        <!-- سيتم تعبئتها بواسطة JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- ===== MODALS ===== -->
+    <!-- ========================================================= -->
+
+    <!-- ===== MESSAGE MODAL ===== -->
+    <div class="modal-overlay" id="messageModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fas fa-envelope"></i> رسالة جديدة</h3>
+                <button class="close-btn" onclick="closeModal('messageModal')">&times;</button>
+            </div>
+            <form id="messageForm" onsubmit="sendMessage(event)">
+                <div class="form-group">
+                    <label>إلى</label>
+                    <select id="messageTo" required>
+                        <option value="admin">إدارة المدرسة</option>
+                        <option value="teacher">المعلم</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>الموضوع</label>
+                    <input type="text" id="messageSubject" placeholder="موضوع الرسالة" required />
+                </div>
+                <div class="form-group">
+                    <label>الرسالة</label>
+                    <textarea id="messageBody" rows="4" placeholder="اكتب رسالتك هنا..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:0.8rem;">
+                    <i class="fas fa-paper-plane"></i> إرسال الرسالة
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- ===== JAVASCRIPT ===== -->
+    <!-- ========================================================= -->
+    <script>
+        // ===== DATA =====
+        // بيانات ولي الأمر
+        let parentData = {
+            name: 'عبدالله محمد',
+            role: 'ولي أمر',
+            avatar: 'ع',
+            childrenCodes: ['S-2025-001', 'S-2025-002'] // كود الطلاب المرتبطين
+        };
+
+        // بيانات الطلاب (من localStorage الخاص بالمدير)
+        let allStudents = JSON.parse(localStorage.getItem('tamrah_students')) || [];
+
+        // بيانات الدرجات (من localStorage الخاص بالمعلم/المدير)
+        let allGrades = JSON.parse(localStorage.getItem('tamrah_teacher_grades')) || [];
+        let adminGrades = JSON.parse(localStorage.getItem('tamrah_grades')) || [];
+        let grades = [...allGrades, ...adminGrades];
+
+        // بيانات الحضور
+        let allAttendances = JSON.parse(localStorage.getItem('tamrah_teacher_attendance')) || [];
+        let adminAttendances = JSON.parse(localStorage.getItem('tamrah_attendances')) || [];
+        let attendances = [...allAttendances, ...adminAttendances];
+
+        // بيانات المخالفات
+        let incidents = JSON.parse(localStorage.getItem('tamrah_incidents')) || [];
+
+        // بيانات الإشعارات الخاصة بولي الأمر
+        let parentNotifications = JSON.parse(localStorage.getItem('tamrah_parent_notifications')) || [];
+
+        // بيانات الرسائل
+        let parentMessages = JSON.parse(localStorage.getItem('tamrah_parent_messages')) || [];
+
+        // بيانات التوقيع
+        let signatureData = JSON.parse(localStorage.getItem('tamrah_parent_signature')) || {
+            signed: false,
+            name: '',
+            date: '',
+            logs: []
+        };
+
+        let idCounter = parseInt(localStorage.getItem('tamrah_parent_counter')) || 1;
+
+        // أبناء ولي الأمر
+        function getMyChildren() {
+            return allStudents.filter(s => parentData.childrenCodes.includes(s.code));
+        }
+
+        // ===== TOAST =====
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+            toast.textContent = `${icons[type] || 'ℹ️'} ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(50px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // ===== SAVE DATA =====
+        function saveData() {
+            localStorage.setItem('tamrah_parent_notifications', JSON.stringify(parentNotifications));
+            localStorage.setItem('tamrah_parent_messages', JSON.stringify(parentMessages));
+            localStorage.setItem('tamrah_parent_signature', JSON.stringify(signatureData));
+            localStorage.setItem('tamrah_parent_counter', String(idCounter));
+            updateStats();
+            renderAll();
+        }
+
+        // ===== UPDATE STATS =====
+        function updateStats() {
+            const children = getMyChildren();
+            document.getElementById('childrenCount').textContent = children.length;
+
+            // المعدل العام
+            const childIds = children.map(c => c.id);
+            const childGrades = grades.filter(g => childIds.includes(g.studentId));
+            const avg = childGrades.length ? Math.round(childGrades.reduce((a, b) => a + b.score, 0) / childGrades.length) : 0;
+            document.getElementById('avgGrade').textContent = avg + '%';
+
+            // نسبة الحضور
+            const childAtt = attendances.filter(a => childIds.includes(a.studentId));
+            const present = childAtt.filter(a => a.status === 'حاضر').length;
+            const rate = childAtt.length ? Math.round((present / childAtt.length) * 100) : 0;
+            document.getElementById('attendanceRate').textContent = rate + '%';
+
+            // الإشعارات
+            const unread = parentNotifications.filter(n => !n.read).length;
+            document.getElementById('notifCount').textContent = unread;
+
+            // المخالفات
+            const childIncidents = incidents.filter(i => childIds.includes(i.studentId));
+            document.getElementById('incidentCount').textContent = childIncidents.length;
+
+            // التوقيع
+            document.getElementById('signatureStatus').textContent = signatureData.signed ? '✓' : '✗';
+            document.getElementById('signatureStatus').style.color = signatureData.signed ? '#28a745' : '#dc3545';
+        }
+
+        // ===== RENDER ALL =====
+        function renderAll() {
+            renderChildrenDashboard();
+            renderChildrenList();
+            renderGradesList();
+            renderAttendanceList();
+            renderNotifications();
+            renderMessages();
+            renderSignatureLog();
+            updateSignatureUI();
+        }
+
+        // ===== RENDER CHILDREN DASHBOARD =====
+        function renderChildrenDashboard() {
+            const container = document.getElementById('childrenDashboard');
+            if (!container) return;
+            const children = getMyChildren().slice(0, 3);
+
+            if (children.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-user-graduate"></i><p>لا يوجد أبناء مسجلين</p></div>`;
+                return;
+            }
+
+            container.innerHTML = children.map(c => {
+                const childGrades = grades.filter(g => g.studentId === c.id);
+                const avg = childGrades.length ? Math.round(childGrades.reduce((a, b) => a + b.score, 0) / childGrades
+                    .length) : 0;
+                const childAtt = attendances.filter(a => a.studentId === c.id);
+                const present = childAtt.filter(a => a.status === 'حاضر').length;
+                const rate = childAtt.length ? Math.round((present / childAtt.length) * 100) : 0;
+
+                return `
+                    <div class="child-card">
+                        <div class="child-header">
+                            <div class="avatar">${c.name.charAt(0)}</div>
+                            <div class="info">
+                                <div class="name">${c.name}</div>
+                                <div class="class">${c.class}</div>
+                            </div>
+                        </div>
+                        <div class="grades-row">
+                            ${childGrades.slice(0, 4).map(g => `
+                                <div class="grade-item">
+                                    <div class="subject">${g.subject}</div>
+                                    <div class="score">${g.score}</div>
+                                </div>
+                            `).join('')}
+                            ${childGrades.length > 4 ? `<div class="grade-item"><div class="subject">...</div><div class="score">+${childGrades.length - 4}</div></div>` : ''}
+                            ${childGrades.length === 0 ? `<div class="grade-item"><div class="subject">لا توجد</div><div class="score">-</div></div>` : ''}
+                        </div>
+                        <div class="child-stats">
+                            <span class="stat">🏫 <strong>${c.class}</strong></span>
+                            <span class="stat">⭐ <strong>${avg}%</strong> معدل</span>
+                            <span class="stat">📊 <strong>${rate}%</strong> حضور</span>
+                            <span class="stat">📋 <strong>${childAtt.length}</strong> يوم</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ===== RENDER CHILDREN LIST =====
+        function renderChildrenList() {
+            const container = document.getElementById('childrenList');
+            if (!container) return;
+            const children = getMyChildren();
+
+            if (children.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-user-graduate"></i><p>لا يوجد أبناء مسجلين</p></div>`;
+                return;
+            }
+
+            container.innerHTML = children.map(c => {
+                const childGrades = grades.filter(g => g.studentId === c.id);
+                const avg = childGrades.length ? Math.round(childGrades.reduce((a, b) => a + b.score, 0) / childGrades
+                    .length) : 0;
+                const childAtt = attendances.filter(a => a.studentId === c.id);
+                const present = childAtt.filter(a => a.status === 'حاضر').length;
+                const rate = childAtt.length ? Math.round((present / childAtt.length) * 100) : 0;
+                const childIncidents = incidents.filter(i => i.studentId === c.id);
+
+                return `
+                    <div class="child-card">
+                        <div class="child-header">
+                            <div class="avatar">${c.name.charAt(0)}</div>
+                            <div class="info">
+                                <div class="name">${c.name}</div>
+                                <div class="class">${c.class}</div>
+                            </div>
+                        </div>
+                        <div class="grades-row">
+                            ${childGrades.length > 0 ? childGrades.map(g => `
+                                <div class="grade-item">
+                                    <div class="subject">${g.subject}</div>
+                                    <div class="score">${g.score}</div>
+                                </div>
+                            `).join('') : `<div class="grade-item"><div class="subject">لا توجد درجات</div><div class="score">-</div></div>`}
+                        </div>
+                        <div class="child-stats">
+                            <span class="stat">⭐ <strong>${avg}%</strong> المعدل</span>
+                            <span class="stat">📊 <strong>${rate}%</strong> الحضور</span>
+                            <span class="stat">📋 <strong>${childAtt.length}</strong> أيام</span>
+                            <span class="stat">⚠️ <strong>${childIncidents.length}</strong> مخالفة</span>
+                            <span class="stat">📝 <strong>${childGrades.length}</strong> مادة</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ===== RENDER GRADES LIST =====
+        function renderGradesList() {
+            const container = document.getElementById('gradesList');
+            if (!container) return;
+            const children = getMyChildren();
+            const childIds = children.map(c => c.id);
+            const childGrades = grades.filter(g => childIds.includes(g.studentId));
+
+            if (childGrades.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-star"></i><p>لا توجد درجات مسجلة</p></div>`;
+                return;
+            }
+
+            let html = `<div class="table-responsive"><table>
+                <thead><tr><th>#</th><th>الطالب</th><th>المادة</th><th>الدرجة</th><th>التقدير</th><th>التاريخ</th></tr></thead><tbody>`;
+
+            childGrades.forEach((g, i) => {
+                const student = allStudents.find(s => s.id === g.studentId);
+                const grade = g.score;
+                let rating = '';
+                if (grade >= 90) rating = 'ممتاز';
+                else if (grade >= 80) rating = 'جيد جداً';
+                else if (grade >= 70) rating = 'جيد';
+                else if (grade >= 60) rating = 'مقبول';
+                else rating = 'ضعيف';
+
+                html += `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${student ? student.name : 'غير موجود'}</td>
+                        <td>${g.subject}</td>
+                        <td><strong>${g.score}</strong></td>
+                        <td><span class="badge-status ${grade >= 70 ? 'present' : 'absent'}">${rating}</span></td>
+                        <td>${g.date || '--'}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table></div>`;
+            container.innerHTML = html;
+        }
+
+        // ===== RENDER ATTENDANCE LIST =====
+        function renderAttendanceList() {
+            const container = document.getElementById('attendanceList');
+            if (!container) return;
+            const children = getMyChildren();
+            const childIds = children.map(c => c.id);
+            const childAtt = attendances.filter(a => childIds.includes(a.studentId));
+
+            if (childAtt.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>لا توجد سجلات حضور</p></div>`;
+                return;
+            }
+
+            let html = `<div class="table-responsive"><table>
+                <thead><tr><th>#</th><th>الطالب</th><th>التاريخ</th><th>الحالة</th><th>الوقت</th></tr></thead><tbody>`;
+
+            childAtt.slice().reverse().forEach((a, i) => {
+                const student = allStudents.find(s => s.id === a.studentId);
+                html += `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${student ? student.name : 'غير موجود'}</td>
+                        <td>${a.date}</td>
+                        <td><span class="badge-status ${a.status === 'حاضر' ? 'present' : a.status === 'غائب' ? 'absent' : a.status === 'متأخر' ? 'late' : 'excused'}">${a.status}</span></td>
+                        <td>${a.time || '-'}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table></div>`;
+            container.innerHTML = html;
+        }
+
+        // ===== RENDER NOTIFICATIONS =====
+        function renderNotifications() {
+            const container = document.getElementById('notificationsList');
+            if (!container) return;
+
+            if (parentNotifications.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-bell"></i><p>لا توجد إشعارات</p></div>`;
+                return;
+            }
+
+            container.innerHTML = parentNotifications.slice().reverse().map(n => `
+                <div class="notification-item" style="${n.read ? 'opacity:0.7;' : ''}">
+                    <div class="notif-content">
+                        <i class="fas ${n.read ? 'fa-envelope-open' : 'fa-envelope'}"></i>
+                        <div>
+                            <div class="notif-text">${n.title}</div>
+                            <div class="notif-desc">${n.message}</div>
+                        </div>
+                    </div>
+                    <div class="notif-date">
+                        ${n.read ? '✓ مقروء' : '● جديد'} · ${n.date}
+                        ${!n.read ? `<button class="btn-success btn-sm" onclick="markRead(${n.id})" style="margin-right:0.5rem;">تحديد مقروء</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== RENDER MESSAGES =====
+        function renderMessages() {
+            const container = document.getElementById('messagesList');
+            if (!container) return;
+
+            if (parentMessages.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-envelope"></i><p>لا توجد رسائل</p></div>`;
+                return;
+            }
+
+            container.innerHTML = parentMessages.slice().reverse().map(m => `
+                <div class="notification-item">
+                    <div class="notif-content">
+                        <i class="fas fa-${m.from === 'parent' ? 'user' : 'school'}"></i>
+                        <div>
+                            <div class="notif-text">${m.subject}</div>
+                            <div class="notif-desc">${m.body}</div>
+                        </div>
+                    </div>
+                    <div class="notif-date">
+                        <span class="badge-status ${m.from === 'parent' ? 'warning' : 'present'}">${m.from === 'parent' ? 'مرسلة' : 'وارد'}</span>
+                        ${m.date}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== RENDER SIGNATURE LOG =====
+        function renderSignatureLog() {
+            const container = document.getElementById('signatureLog');
+            if (!container) return;
+
+            if (!signatureData.logs || signatureData.logs.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><p>لا توجد توقيعات سابقة</p></div>`;
+                return;
+            }
+
+            container.innerHTML = signatureData.logs.slice().reverse().map(log => `
+                <div class="notification-item">
+                    <div class="notif-content">
+                        <i class="fas fa-pen-fancy" style="color:#28a745;"></i>
+                        <div>
+                            <div class="notif-text">${log.document || 'توقيع عام'}</div>
+                            <div class="notif-desc">${log.name || parentData.name}</div>
+                        </div>
+                    </div>
+                    <div class="notif-date">${log.date}</div>
+                </div>
+            `).join('');
+        }
+
+        // ===== UPDATE SIGNATURE UI =====
+        function updateSignatureUI() {
+            const area = document.getElementById('signatureArea');
+            const preview = document.getElementById('signaturePreview');
+
+            if (signatureData.signed) {
+                area.classList.add('signed');
+                preview.textContent = signatureData.name || parentData.name + ' ✓';
+                document.querySelector('.sig-label').textContent = `✅ تم التوقيع في ${signatureData.date}`;
+            } else {
+                area.classList.remove('signed');
+                preview.textContent = '................................';
+                document.querySelector('.sig-label').textContent = '✏️ اضغط هنا للتوقيع الإلكتروني';
+            }
+        }
+
+        // ===== TOGGLE SIGNATURE =====
+        function toggleSignature() {
+            if (signatureData.signed) {
+                showToast('التوقيع موجود بالفعل', 'warning');
+                return;
+            }
+
+            // محاكاة طلب توقيع
+            const now = new Date().toLocaleDateString('ar-EG');
+            signatureData.signed = true;
+            signatureData.name = parentData.name;
+            signatureData.date = now;
+
+            // تسجيل في السجل
+            if (!signatureData.logs) signatureData.logs = [];
+            signatureData.logs.push({
+                id: idCounter++,
+                name: parentData.name,
+                document: 'موافقة عامة',
+                date: now
+            });
+
+            saveData();
+            updateSignatureUI();
+            showToast('✅ تم التوقيع الإلكتروني بنجاح', 'success');
+
+            // إضافة إشعار
+            parentNotifications.push({
+                id: idCounter++,
+                title: 'توقيع إلكتروني',
+                message: `تم التوقيع الإلكتروني بواسطة ${parentData.name} في ${now}`,
+                date: now,
+                read: false
+            });
+            saveData();
+        }
+
+        // ===== CLEAR SIGNATURE =====
+        function clearSignature() {
+            if (!signatureData.signed) {
+                showToast('لا يوجد توقيع لمسحه', 'warning');
+                return;
+            }
+
+            if (!confirm('هل أنت متأكد من مسح التوقيع؟')) return;
+
+            signatureData.signed = false;
+            signatureData.name = '';
+            signatureData.date = '';
+            saveData();
+            updateSignatureUI();
+            showToast('🗑️ تم مسح التوقيع', 'info');
+        }
+
+        // ===== DOWNLOAD SIGNATURE =====
+        function downloadSignature() {
+            if (!signatureData.signed) {
+                showToast('الرجاء التوقيع أولاً', 'error');
+                return;
+            }
+
+            // محاكاة تحميل
+            const content = `
+                ==============================
+                التوقيع الإلكتروني
+                ==============================
+                الاسم: ${signatureData.name}
+                التاريخ: ${signatureData.date}
+                المدرسة: متوسطة تمره
+                ==============================
+                تم التوقيع إلكترونياً
+            `;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `توقيع_${signatureData.name}_${signatureData.date.replace(/\//g, '-')}.txt`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+
+            showToast('📥 تم تحميل التوقيع', 'success');
+        }
+
+        // ===== MARK NOTIFICATION READ =====
+        function markRead(id) {
+            const notif = parentNotifications.find(n => n.id === id);
+            if (notif) {
+                notif.read = true;
+                saveData();
+                showToast('✅ تم تعيين الإشعار كمقروء', 'success');
+            }
+        }
+
+        function markAllRead() {
+            parentNotifications.forEach(n => n.read = true);
+            saveData();
+            showToast('✅ تم تعيين جميع الإشعارات كمقروءة', 'success');
+        }
+
+        // ===== SEND MESSAGE =====
+        function sendMessage(e) {
+            e.preventDefault();
+            const to = document.getElementById('messageTo').value;
+            const subject = document.getElementById('messageSubject').value.trim();
+            const body = document.getElementById('messageBody').value.trim();
+
+            if (!subject || !body) {
+                showToast('الرجاء تعبئة جميع الحقول', 'error');
+                return;
+            }
+
+            parentMessages.push({
+                id: idCounter++,
+                from: 'parent',
+                to: to,
+                subject: subject,
+                body: body,
+                date: new Date().toLocaleDateString('ar-EG')
+            });
+
+            // إضافة إشعار
+            parentNotifications.push({
+                id: idCounter++,
+                title: 'رسالة مرسلة',
+                message: `تم إرسال رسالة "${subject}" إلى ${to === 'admin' ? 'الإدارة' : 'المعلم'}`,
+                date: new Date().toLocaleDateString('ar-EG'),
+                read: false
+            });
+
+            saveData();
+            document.getElementById('messageForm').reset();
+            closeModal('messageModal');
+            showToast('📨 تم إرسال الرسالة بنجاح', 'success');
+        }
+
+        // ===== OPEN MESSAGE MODAL =====
+        function openMessageModal() {
+            document.getElementById('messageModal').classList.add('show');
+        }
+
+        // ===== CLOSE MODAL =====
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        // ===== NAVIGATION =====
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('page-' + pageId);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.sidebar-menu a[data-page]').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.page === pageId) link.classList.add('active');
+            });
+
+            const titles = {
+                'dashboard': { title: 'الرئيسية', sub: 'لوحة تحكم ولي الأمر' },
+                'children': { title: 'بيانات الأبناء', sub: 'متابعة الأبناء والدرجات' },
+                'grades': { title: 'الدرجات', sub: 'عرض درجات الأبناء' },
+                'attendance': { title: 'الحضور والغياب', sub: 'متابعة حضور الأبناء' },
+                'notifications': { title: 'الإشعارات', sub: 'جميع الإشعارات' },
+                'messages': { title: 'الرسائل', sub: 'المراسلات' },
+                'signature': { title: 'التوقيع الإلكتروني', sub: 'إدارة التوقيع الإلكتروني' }
+            };
+
+            const info = titles[pageId] || { title: pageId, sub: '' };
+            document.getElementById('pageTitle').textContent = info.title;
+            document.getElementById('pageSubtitle').textContent = info.sub;
+
+            if (window.innerWidth <= 992) {
+                document.getElementById('sidebar').classList.remove('open');
+                document.getElementById('sidebarOverlay').classList.remove('show');
+            }
+        }
+
+        // ===== TOGGLE SIDEBAR =====
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+
+        // ===== LOGOUT =====
+        function handleLogout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // ===== CLOSE MODAL ON OVERLAY CLICK =====
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('show');
+                }
+            });
+        });
+
+        // ===== INIT =====
+        updateStats();
+        renderAll();
+        updateSignatureUI();
+
+        console.log('👨‍👦 متوسطة تمره - لوحة تحكم ولي الأمر');
+        console.log(`👤 ${parentData.name} - ${parentData.role}`);
+        console.log(`👨‍🎓 عدد الأبناء: ${getMyChildren().length}`);
+        console.log(`📋 ${parentNotifications.length} إشعار`);
+        console.log(`📨 ${parentMessages.length} رسالة`);
+        console.log(`✍️ التوقيع: ${signatureData.signed ? 'موقّع ✅' : 'غير موقع ❌'}`);
+    </script>
+
+</body>
+</html>
