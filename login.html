@@ -418,15 +418,26 @@
     <!-- ===== JAVASCRIPT ===== -->
     <!-- ========================================================= -->
     <script>
-        // ===== ROLE SELECTION =====
+        // ===== الحسابات التجريبية =====
+        const accounts = {
+            admin: { username: 'admin', password: '123456', role: 'مدير', page: 'manager.html' },
+            teacher: { username: 'teacher', password: '123456', role: 'معلم', page: 'teacher.html' },
+            parent: { username: 'parent', password: '123456', role: 'ولي أمر', page: 'parent.html' }
+        };
+
+        let selectedRole = 'admin';
+
+        // ===== اختيار الدور =====
         function selectRole(role) {
+            selectedRole = role;
             document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
             document.querySelector(`.role-btn[data-role="${role}"]`).classList.add('active');
         }
 
-        // ===== LOGIN HANDLER =====
+        // ===== معالج تسجيل الدخول =====
         function handleLogin(e) {
             e.preventDefault();
+            
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
 
@@ -435,21 +446,34 @@
                 return;
             }
 
-            // محاكاة تسجيل الدخول
-            alert('✅ تم تسجيل الدخول بنجاح! مرحباً بك في منصة متوسطة تمره.');
+            // البحث عن الحساب
+            const account = accounts[selectedRole];
             
-            // تحويل إلى لوحة التحكم
-            window.location.href = 'dashboard.html';
+            if (!account) {
+                alert('❌ يرجى اختيار نوع المستخدم أولاً');
+                return;
+            }
+
+            // التحقق من البيانات
+            if (username === account.username && password === account.password) {
+                alert(`✅ مرحباً ${account.role}! تم تسجيل الدخول بنجاح.`);
+                window.location.href = account.page;
+            } else {
+                alert(`❌ اسم المستخدم أو كلمة المرور غير صحيحة لحساب ${account.role}`);
+            }
         }
 
-        // ===== LANGUAGE SWITCH =====
+        // ===== تغيير اللغة =====
         function setLang(lang) {
             document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
-            // هنا يمكن إضافة منطق تغيير اللغة
         }
 
         console.log('🔐 صفحة تسجيل الدخول - متوسطة تمره');
+        console.log('📋 الحسابات التجريبية:');
+        console.log('  👨‍💼 مدير: admin / 123456');
+        console.log('  👨‍🏫 معلم: teacher / 123456');
+        console.log('  👨‍👩‍👦 ولي أمر: parent / 123456');
     </script>
 
 </body>
