@@ -829,6 +829,118 @@
         .empty-state p {
             font-size: 0.9rem;
         }
+
+        /* ===== SETTINGS STYLES ===== */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .logo-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            border: 2px dashed rgba(42, 138, 158, 0.15);
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .logo-upload .logo-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: #e8edf2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #6a8a96;
+        }
+
+        .staff-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .staff-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid rgba(42, 138, 158, 0.04);
+        }
+
+        .staff-item .role {
+            font-weight: 600;
+            color: #0d4a55;
+        }
+
+        .staff-item .name {
+            color: #6a8a96;
+        }
+
+        .visit-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 16px;
+            border: 1px solid rgba(42, 138, 158, 0.04);
+            margin-bottom: 0.8rem;
+        }
+
+        .visit-card .visit-title {
+            font-weight: 700;
+            color: #0d4a55;
+        }
+        .visit-card .visit-desc {
+            font-size: 0.85rem;
+            color: #6a8a96;
+        }
+        .visit-card .visit-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .circular-link {
+            display: block;
+            padding: 0.8rem 1.2rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid rgba(42, 138, 158, 0.04);
+            margin-bottom: 0.5rem;
+            text-decoration: none;
+            color: #1a2e3a;
+            transition: all 0.3s;
+        }
+
+        .circular-link:hover {
+            background: #e8edf2;
+            border-color: #2a8a9e;
+        }
+
+        .circular-link .circular-title {
+            font-weight: 600;
+            color: #0d4a55;
+        }
+        .circular-link .circular-date {
+            font-size: 0.75rem;
+            color: #6a8a96;
+        }
+        .circular-link .circular-status {
+            float: left;
+        }
     </style>
 </head>
 <body>
@@ -915,10 +1027,8 @@
                 <a data-page="exams" onclick="showPage('exams')">
                     <i class="fas fa-pencil-alt"></i> الاختبارات
                 </a>
-                <a data-page="platform" onclick="showPage('platform')">
-                    <i class="fas fa-laptop"></i> منصة مدرستى
-                </a>
-               
+
+                <div class="menu-section">الأنشطة واللجان</div>
                 <a data-page="committees" onclick="showPage('committees')">
                     <i class="fas fa-users"></i> اللجان والتكاليف العامة
                 </a>
@@ -932,7 +1042,7 @@
                     <i class="fas fa-compass"></i> التوجيه الطلابى
                 </a>
 
-                <div class="menu-section">النظام</div>
+                <div class="menu-section">النظام والإعدادات</div>
                 <a data-page="notifications" onclick="showPage('notifications')">
                     <i class="fas fa-bell"></i> الإشعارات والقوالب
                 </a>
@@ -960,15 +1070,28 @@
                 <a data-page="send-reports" onclick="showPage('send-reports')">
                     <i class="fas fa-paper-plane"></i> تقارير الإرسال
                 </a>
-                <a data-page="subscription" onclick="showPage('subscription')">
-                    <i class="fas fa-crown"></i> الاشتراك والباقات
-                </a>
                 <a data-page="eshara-tool" onclick="showPage('eshara-tool')">
                     <i class="fas fa-tools"></i> أداة إشعاركم
+                </a>
+
+                <!-- ===== NEW MENU ITEMS ===== -->
+                <a data-page="visits-communities" onclick="showPage('visits-communities')">
+                    <i class="fas fa-people-arrows"></i> الزيارات والمجتمعات
+                </a>
+                <a data-page="circulars" onclick="showPage('circulars')">
+                    <i class="fas fa-bullhorn"></i> التعاميم والاطلاع عليها
+                </a>
+                <a data-page="unified-sign" onclick="showPage('unified-sign')">
+                    <i class="fas fa-signature"></i> رابط التوقيع الموحد
                 </a>
                 <a data-page="settings" onclick="showPage('settings')">
                     <i class="fas fa-cog"></i> إعدادات المدرسة
                 </a>
+                <a data-page="health-guidance" onclick="showPage('health-guidance')">
+                    <i class="fas fa-heartbeat"></i> التوجيه الصحي
+                </a>
+
+                <div class="menu-section">أخرى</div>
                 <a data-page="archive" onclick="showPage('archive')">
                     <i class="fas fa-archive"></i> أرشيف المحذوفات
                 </a>
@@ -1418,23 +1541,131 @@
                     <div class="section-header">
                         <h3><i class="fas fa-cog"></i> إعدادات المدرسة</h3>
                     </div>
-                    <div class="form-group">
-                        <label>اسم المدرسة</label>
-                        <input type="text" value="متوسطة تمره" />
+
+                    <div class="settings-grid">
+                        <!-- بيانات المدرسة -->
+                        <div>
+                            <h4 style="color:#0d4a55; margin-bottom:1rem;"><i class="fas fa-building"></i> بيانات المدرسة</h4>
+                            <div class="form-group">
+                                <label>اسم المدرسة</label>
+                                <input type="text" value="متوسطة تمره" />
+                            </div>
+                            <div class="form-group">
+                                <label>منطقة</label>
+                                <input type="text" placeholder="الرياض" />
+                            </div>
+                            <div class="form-group">
+                                <label>الدولة</label>
+                                <input type="text" placeholder="المملكة العربية السعودية" />
+                            </div>
+                            <div class="form-group">
+                                <label>المدينة</label>
+                                <input type="text" placeholder="الرياض" />
+                            </div>
+                            <div class="form-group">
+                                <label>الحي</label>
+                                <input type="text" placeholder="حي الملز" />
+                            </div>
+                            <div class="form-group">
+                                <label>رقم المدرسة - هاتف</label>
+                                <input type="text" placeholder="0110000000" />
+                            </div>
+                            <div class="form-group">
+                                <label>المستودع (966+)</label>
+                                <input type="text" placeholder="+966500000000" />
+                            </div>
+                            <div class="form-group">
+                                <label>العنوان</label>
+                                <input type="text" placeholder="الرياض، المملكة العربية السعودية" />
+                            </div>
+                            <div class="form-group">
+                                <label>رقم الدخول</label>
+                                <input type="text" placeholder="500000000" />
+                            </div>
+                        </div>
+
+                        <!-- إدارة التعليم -->
+                        <div>
+                            <h4 style="color:#0d4a55; margin-bottom:1rem;"><i class="fas fa-university"></i> إدارة التعليم</h4>
+                            <div class="form-group">
+                                <label>اسم الوزارة</label>
+                                <input type="text" value="وزارة التعليم" />
+                            </div>
+                            <div class="form-group">
+                                <label>إدارة التعليم</label>
+                                <input type="text" placeholder="إدارة التعليم بالرياض" />
+                            </div>
+                            <div class="form-group">
+                                <label>المكتب التعليمي</label>
+                                <input type="text" placeholder="المكتب التعليمي شمال الرياض" />
+                            </div>
+                            <div class="form-group">
+                                <label>توجيه رسمي إضافي الإنجاز</label>
+                                <input type="text" placeholder="توجيه الرياض" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>عنوان المدرسة</label>
-                        <input type="text" value="الرياض، المملكة العربية السعودية" />
+
+                    <!-- القيادة -->
+                    <div style="margin-top:1.5rem;">
+                        <h4 style="color:#0d4a55; margin-bottom:1rem;"><i class="fas fa-user-tie"></i> القيادة</h4>
+                        <div class="staff-list">
+                            <div class="staff-item">
+                                <span class="role">مدير المدرسة</span>
+                                <span class="name">أحمد المالكي</span>
+                            </div>
+                            <div class="staff-item">
+                                <span class="role">وكيل شؤون الطلاب</span>
+                                <span class="name">خالد العتيبي</span>
+                            </div>
+                            <div class="staff-item">
+                                <span class="role">وكيل شؤون المعلمين</span>
+                                <span class="name">عبدالله السعيد</span>
+                            </div>
+                            <div class="staff-item">
+                                <span class="role">رائد النشاط</span>
+                                <span class="name">سعود الفهيد</span>
+                            </div>
+                            <div class="staff-item">
+                                <span class="role">مشرف الأمن والسلامة</span>
+                                <span class="name">فيصل القحطاني</span>
+                            </div>
+                            <div class="staff-item">
+                                <span class="role">الموجه الطلابي 1</span>
+                                <span class="name">محمد الزهراني</span>
+                            </div>
+                            <div class="staff-item">
+                                <span class="role">الموجه الطلابي 2</span>
+                                <span class="name">ناصر الدوسري</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>رقم التواصل</label>
-                        <input type="text" value="+966500000000" />
+
+                    <!-- الشعارات الرسمية -->
+                    <div style="margin-top:1.5rem;">
+                        <h4 style="color:#0d4a55; margin-bottom:1rem;"><i class="fas fa-image"></i> الشعارات الرسمية</h4>
+                        <div class="settings-grid">
+                            <div class="logo-upload">
+                                <div class="logo-preview"><i class="fas fa-school"></i></div>
+                                <span>شعار المدرسة</span>
+                                <button class="btn-primary btn-sm" onclick="showToast('تم رفع الشعار', 'success')"><i class="fas fa-upload"></i> رفع</button>
+                            </div>
+                            <div class="logo-upload">
+                                <div class="logo-preview"><i class="fas fa-university"></i></div>
+                                <span>شعار إدارة التعليم (P2PI)</span>
+                                <button class="btn-primary btn-sm" onclick="showToast('تم رفع الشعار', 'success')"><i class="fas fa-upload"></i> رفع</button>
+                            </div>
+                            <div class="logo-upload">
+                                <div class="logo-preview"><i class="fas fa-university" style="opacity:0.5;"></i></div>
+                                <span>شعار إدارة التعليم (شفاف)</span>
+                                <button class="btn-primary btn-sm" onclick="showToast('تم رفع الشعار', 'success')"><i class="fas fa-upload"></i> رفع</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>البريد الإلكتروني</label>
-                        <input type="email" value="info@tamrah.school" />
+
+                    <div style="margin-top:1.5rem;">
+                        <button class="btn-primary" onclick="showToast('✅ تم حفظ الإعدادات', 'success')"><i class="fas fa-save"></i> حفظ جميع الإعدادات</button>
                     </div>
-                    <button class="btn-primary" onclick="showToast('✅ تم حفظ الإعدادات', 'success')"><i class="fas fa-save"></i> حفظ الإعدادات</button>
                 </div>
             </div>
 
@@ -1472,6 +1703,159 @@
             </div>
 
             <!-- ========================================================= -->
+            <!-- ===== PAGE: VISITS & COMMUNITIES ===== -->
+            <!-- ========================================================= -->
+            <div id="page-visits-communities" class="page-content">
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-people-arrows"></i> الزيارات والمجتمعات</h3>
+                    </div>
+                    <p style="color:#6a8a96; margin-bottom:1rem;">منصة متكاملة لتطوير الأداء المدرسي: زيارات إشرافية مهيكلة، تبادل زيارات بين المعلمين، ومجتمعات أعمال مهنية.</p>
+
+                    <div class="visit-card">
+                        <div class="visit-title">المجتمعات المهنية</div>
+                        <div class="visit-desc">اجتماعات تعليم مهارات تطويرية مع تصويت، وبناء قدرات شاغلية.</div>
+                        <div class="visit-actions">
+                            <button class="btn-primary btn-sm" onclick="showToast('تم تفعيل المجتمعات المهنية', 'success')"><i class="fas fa-check"></i> تفعيل الوحدة</button>
+                        </div>
+                    </div>
+
+                    <div class="visit-card">
+                        <div class="visit-title">تبادل الزيارات بين المعلمين</div>
+                        <div class="visit-desc">توليد جدول تبادل الزيارات (مشاكل أو تحديثات) مع استشارة وتقديم.</div>
+                        <div class="visit-actions">
+                            <button class="btn-primary btn-sm" onclick="showToast('تم تفعيل تبادل الزيارات', 'success')"><i class="fas fa-check"></i> تفعيل الوحدة</button>
+                        </div>
+                    </div>
+
+                    <div class="visit-card">
+                        <div class="visit-title">الزيارات الإشرافية</div>
+                        <div class="visit-desc">استمارة تقديم إخراجاتها، توظيف إلكتروني، واعتماد.</div>
+                        <div class="visit-actions">
+                            <button class="btn-primary btn-sm" onclick="showToast('تم تفعيل الزيارات الإشرافية', 'success')"><i class="fas fa-check"></i> تفعيل الوحدة</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ===== PAGE: CIRCULARS ===== -->
+            <!-- ========================================================= -->
+            <div id="page-circulars" class="page-content">
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-bullhorn"></i> التعاميم والاطلاع عليها</h3>
+                        <button class="btn-primary" onclick="showToast('تم إضافة تعميم جديد', 'success')"><i class="fas fa-plus"></i> إضافة تعميم</button>
+                    </div>
+
+                    <div class="circular-link">
+                        <div>
+                            <span class="circular-title">تعميم رقم 1: مواعيد الاختبارات النهائية</span>
+                            <div class="circular-date">تاريخ النشر: 2025-01-15</div>
+                        </div>
+                        <span class="circular-status"><span class="badge-status present">مقرؤ</span></span>
+                    </div>
+
+                    <div class="circular-link">
+                        <div>
+                            <span class="circular-title">تعميم رقم 2: خطة الأنشطة للفصل الثاني</span>
+                            <div class="circular-date">تاريخ النشر: 2025-01-10</div>
+                        </div>
+                        <span class="circular-status"><span class="badge-status warning">غير مقرؤ</span></span>
+                    </div>
+
+                    <div class="circular-link">
+                        <div>
+                            <span class="circular-title">تعميم رقم 3: إجراءات السلامة المدرسية</span>
+                            <div class="circular-date">تاريخ النشر: 2025-01-05</div>
+                        </div>
+                        <span class="circular-status"><span class="badge-status present">مقرؤ</span></span>
+                    </div>
+
+                    <div class="circular-link">
+                        <div>
+                            <span class="circular-title">تعميم رقم 4: تحديث بيانات الطلاب</span>
+                            <div class="circular-date">تاريخ النشر: 2024-12-28</div>
+                        </div>
+                        <span class="circular-status"><span class="badge-status pending">قيد الاطلاع</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ===== PAGE: UNIFIED SIGN ===== -->
+            <!-- ========================================================= -->
+            <div id="page-unified-sign" class="page-content">
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-signature"></i> رابط التوقيع الموحد للكادر</h3>
+                    </div>
+                    <p style="color:#6a8a96; margin-bottom:1rem;">رابط واحد شامل لكل توظيفات المعلم في المدرسة مع إحالة الآلام مخصصة.</p>
+
+                    <div class="form-group">
+                        <label>رابط التوقيع الموحد</label>
+                        <div style="display:flex; gap:0.5rem;">
+                            <input type="text" value="https://eshaarcomschool.com/u/sign/9e5cf1166d4f4db38961bc9824f8d98b8" readonly style="flex:1;" />
+                            <button class="btn-primary" onclick="showToast('تم نسخ الرابط', 'success')"><i class="fas fa-copy"></i> نسخ</button>
+                        </div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-top:1rem;">
+                        <div class="stat-card"><div class="number">0%</div><div class="label">نسبة الإنجاز المتاحة</div></div>
+                        <div class="stat-card"><div class="number">0</div><div class="label">المساعدة</div></div>
+                        <div class="stat-card"><div class="number">0</div><div class="label">التوظيفات</div></div>
+                    </div>
+
+                    <div style="margin-top:1rem;">
+                        <h4 style="color:#0d4a55; margin-bottom:0.5rem;">تسجيل حساب التطبيق</h4>
+                        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                            <button class="btn-primary btn-sm" onclick="showToast('تم فتح نشرة عامة', 'info')"><i class="fas fa-newspaper"></i> نشرة عامة</button>
+                            <button class="btn-primary btn-sm" onclick="showToast('تم فتح تفاصيل حساب التطبيق', 'info')"><i class="fas fa-user-cog"></i> تفاصيل حساب التطبيق</button>
+                            <button class="btn-primary btn-sm" onclick="showToast('تم فتح تفاصيل حساب العملاء', 'info')"><i class="fas fa-users"></i> تفاصيل حساب العملاء</button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:1rem;">
+                        <h4 style="color:#0d4a55; margin-bottom:0.5rem;">نسخة الالتزام لكل تصنيف</h4>
+                        <button class="btn-primary btn-sm" onclick="showToast('تم تحميل نسخة الالتزام', 'success')"><i class="fas fa-file-pdf"></i> تحميل النموذج</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
+            <!-- ===== PAGE: HEALTH GUIDANCE ===== -->
+            <!-- ========================================================= -->
+            <div id="page-health-guidance" class="page-content">
+                <div class="card-container">
+                    <div class="section-header">
+                        <h3><i class="fas fa-heartbeat"></i> التوجيه الصحي</h3>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card"><div class="number" id="healthTotalVisits">0</div><div class="label">إجمالي الزيارات</div></div>
+                        <div class="stat-card"><div class="number" id="healthDelegated">0</div><div class="label">محاضر مفوضة</div></div>
+                        <div class="stat-card"><div class="number" id="healthTodayVisits">0</div><div class="label">زيارات اليوم</div></div>
+                    </div>
+
+                    <div style="display:flex; gap:0.5rem; margin-bottom:1rem; flex-wrap:wrap;">
+                        <input type="text" placeholder="البحث بالرقم أو اسم الطالب..." style="flex:1; padding:0.5rem 1rem; border-radius:16px; border:2px solid rgba(42,138,158,0.08); outline:none; font-family:'Cairo',sans-serif;" />
+                        <button class="btn-primary" onclick="showToast('جاري البحث...', 'info')"><i class="fas fa-search"></i> بحث</button>
+                    </div>
+
+                    <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+                        <span style="background:#f8fafc; padding:0.3rem 1rem; border-radius:30px; font-weight:600; color:#0d4a55;">محاولة (0)</span>
+                        <span style="background:#f8fafc; padding:0.3rem 1rem; border-radius:30px; font-weight:600; color:#0d4a55;">مفتوحة (0)</span>
+                    </div>
+
+                    <div class="empty-state">
+                        <i class="fas fa-heartbeat"></i>
+                        <p>لا توجد زيارات مسجلة في العيادة المدرسية</p>
+                        <button class="btn-primary" onclick="showToast('تم فتح نموذج تسجيل الزيارة', 'success')"><i class="fas fa-plus"></i> تسجيل زيارة جديدة</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================================= -->
             <!-- ===== PAGES WITH SIMPLE CONTENT ===== -->
             <!-- ========================================================= -->
 
@@ -1501,17 +1885,6 @@
                     <div class="empty-state"><i class="fas fa-book"></i><p>سيتم عرض الحصص المنتظرة هنا</p></div>
                 </div>
             </div>
-
-            <!-- PLATFORM -->
-            <div id="page-platform" class="page-content">
-                <div class="card-container">
-                    <div class="section-header"><h3><i class="fas fa-laptop"></i> منصة مدرستى</h3></div>
-                    <div class="empty-state"><i class="fas fa-laptop"></i><p>جاري التكامل مع منصة مدرستى</p></div>
-                </div>
-            </div>
-
-            <!-- NOOR -->
-       
 
             <!-- COMMITTEES -->
             <div id="page-committees" class="page-content">
@@ -1582,14 +1955,6 @@
                 <div class="card-container">
                     <div class="section-header"><h3><i class="fas fa-paper-plane"></i> تقارير الإرسال</h3></div>
                     <div class="empty-state"><i class="fas fa-paper-plane"></i><p>سيتم عرض تقارير الإرسال هنا</p></div>
-                </div>
-            </div>
-
-            <!-- SUBSCRIPTION -->
-            <div id="page-subscription" class="page-content">
-                <div class="card-container">
-                    <div class="section-header"><h3><i class="fas fa-crown"></i> الاشتراك والباقات</h3></div>
-                    <div class="empty-state"><i class="fas fa-crown"></i><p>إدارة الاشتراكات والباقات</p></div>
                 </div>
             </div>
 
@@ -1668,16 +2033,12 @@
                     <label>الصف <span style="color:#dc3545;">*</span></label>
                     <select id="studentClass" required>
                         <option value="">-- اختر الصف --</option>
-                        <option value="الأول">الأول</option>
-                        <option value="الثاني">الثاني</option>
-                        <option value="الثالث">الثالث</option>
-                        <option value="الرابع">الرابع</option>
-                        <option value="الخامس">الخامس</option>
-                        <option value="السادس">السادس</option>
-                        <option value="السابع">السابع</option>
-                        <option value="الثامن">الثامن</option>
-                        <option value="الأول الثانوي">الأول الثانوي</option>
-                        <option value="الثاني الثانوي">الثاني الثانوي</option>
+                        <option value="الأول">اول متوسط 1</option>
+                        <option value="الثاني">اول متوسط 2</option>
+                        <option value="الثالث">ثاني متوسط 1</option>
+                        <option value="الرابع">ثاني متوسط 2</option>
+                        <option value="الخامس">ثالث متوسط 1</option>
+                        <option value="السادس">ثالث متوسط 2</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1834,10 +2195,6 @@
                         <option value="الرابع">الرابع</option>
                         <option value="الخامس">الخامس</option>
                         <option value="السادس">السادس</option>
-                        <option value="السابع">السابع</option>
-                        <option value="الثامن">الثامن</option>
-                        <option value="الأول الثانوي">الأول الثانوي</option>
-                        <option value="الثاني الثانوي">الثاني الثانوي</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1937,10 +2294,6 @@
                         <option value="الرابع">الرابع</option>
                         <option value="الخامس">الخامس</option>
                         <option value="السادس">السادس</option>
-                        <option value="السابع">السابع</option>
-                        <option value="الثامن">الثامن</option>
-                        <option value="الأول الثانوي">الأول الثانوي</option>
-                        <option value="الثاني الثانوي">الثاني الثانوي</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -2027,7 +2380,7 @@
             document.getElementById('totalTeachers').textContent = teachers.length;
             document.getElementById('totalClasses').textContent = classes.length || [...new Set(students.map(s => s.class))].length;
             document.getElementById('totalIncidents').textContent = incidents.length;
-            document.getElementById('pendingRequests').textContent = incidents.filter(i => i.status === 'قيد المراججة').length;
+            document.getElementById('pendingRequests').textContent = incidents.filter(i => i.status === 'قيد المراجعة').length;
 
             const today = new Date().toISOString().split('T')[0];
             const todayAtt = attendances.filter(a => a.date === today);
@@ -2452,7 +2805,6 @@
             closeModal('gradeModal');
             showToast('✅ تم إضافة الدرجة بنجاح', 'success');
 
-            // Send notification
             const student = students.find(s => s.id === studentId);
             notifications.push({
                 id: idCounter++,
@@ -2499,7 +2851,6 @@
             closeModal('incidentModal');
             showToast('✅ تم تسجيل المخالفة بنجاح', 'success');
 
-            // Send notification
             const student = students.find(s => s.id === studentId);
             notifications.push({
                 id: idCounter++,
@@ -2729,7 +3080,6 @@
                 'teacher-attendance': { title: 'حضور الكادر', sub: 'متابعة حضور المدرسين' },
                 'missions': { title: 'المساعات والإفادات', sub: 'متابعة المهام الإدارية' },
                 'my-classes': { title: 'حصص انتظارى', sub: 'عرض الحصص المنتظرة' },
-                'platform': { title: 'منصة مدرستى', sub: 'التكامل مع منصة مدرستى' },
                 'committees': { title: 'اللجان', sub: 'إدارة اللجان والتكاليف' },
                 'groups': { title: 'المجموعات', sub: 'إدارة المجموعات الدراسية' },
                 'activities': { title: 'النشاط الطلابى', sub: 'إدارة الأنشطة الطلابية' },
@@ -2739,13 +3089,16 @@
                 'operational-plan': { title: 'الخطة التشغيلية', sub: 'إدارة الخطة التشغيلية' },
                 'budget': { title: 'الميزانية', sub: 'إدارة الميزانية التشغيلية' },
                 'send-reports': { title: 'تقارير الإرسال', sub: 'متابعة التقارير المرسلة' },
-                'subscription': { title: 'الاشتراك', sub: 'إدارة الاشتراكات والباقات' },
                 'eshara-tool': { title: 'أداة إشعاركم', sub: 'إعدادات الأداة' },
                 'archive': { title: 'الأرشيف', sub: 'عرض المحذوفات' },
                 'help': { title: 'تعليمات المنصة', sub: 'دليل الاستخدام' },
                 'my-work': { title: 'أعمالى', sub: 'عرض الأعمال الخاصة' },
                 'tasks': { title: 'مهامى', sub: 'مهام اليوم' },
-                'requests': { title: 'الطلبات', sub: 'الطلبات المرسلة للإدارة' }
+                'requests': { title: 'الطلبات', sub: 'الطلبات المرسلة للإدارة' },
+                'visits-communities': { title: 'الزيارات والمجتمعات', sub: 'تطوير الأداء المدرسي' },
+                'circulars': { title: 'التعاميم', sub: 'التعاميم والاطلاع عليها' },
+                'unified-sign': { title: 'رابط التوقيع الموحد', sub: 'التوقيع الموحد للكادر' },
+                'health-guidance': { title: 'التوجيه الصحي', sub: 'إدارة العيادة المدرسية' }
             };
 
             const info = titles[pageId] || { title: pageId, sub: '' };
